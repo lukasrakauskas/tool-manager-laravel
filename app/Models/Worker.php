@@ -16,8 +16,7 @@ class Worker extends Model
         'name',
         'external_code',
         'status',
-        'qr_secret',
-    ];
+            ];
 
     protected static function booted(): void
     {
@@ -73,5 +72,10 @@ class Worker extends Model
     public function auditLogs(): MorphMany
     {
         return $this->morphMany(AuditLog::class, 'subject');
+    }
+
+    public function qrTokens(): MorphMany
+    {
+        return $this->morphMany(QrToken::class, 'subject');
     }
 }
