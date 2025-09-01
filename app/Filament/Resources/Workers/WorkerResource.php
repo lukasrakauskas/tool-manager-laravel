@@ -33,7 +33,7 @@ class WorkerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            \App\Filament\Resources\Workers\RelationManagers\AssignmentsRelationManager::class,
         ];
     }
 
@@ -42,6 +42,7 @@ class WorkerResource extends Resource
         return [
             'index' => ListWorkers::route('/'),
             'create' => CreateWorker::route('/create'),
+            'view' => \App\Filament\Resources\Workers\Pages\ViewWorker::route('/{record}'),
             'edit' => EditWorker::route('/{record}/edit'),
         ];
     }

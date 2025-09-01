@@ -11,6 +11,7 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Auth as SupportAuth;
 
@@ -44,7 +45,7 @@ class EditTool extends EditRecord
                     $actor = SupportAuth::user();
                     Assignment::assign($record, $worker, $due, $data['condition_out'] ?? null, $actor instanceof User ? $actor : null);
                     $this->refreshFormData(['record']);
-                    $this->notify('success', 'Tool assigned');
+                    Notification::make()->title('Tool assigned')->success()->send();
                 }),
             Action::make('return')
                 ->visible(fn (Tool $record): bool => $record->status === 'assigned')
@@ -64,7 +65,7 @@ class EditTool extends EditRecord
                         $actor = SupportAuth::user();
                         $current->markReturned($data['condition_in'] ?? null, $actor instanceof User ? $actor : null);
                         $this->refreshFormData(['record']);
-                        $this->notify('success', 'Tool returned');
+                        Notification::make()->title('Tool returned')->success()->send();
                     }
                 }),
             Action::make('transfer')
@@ -91,14 +92,14 @@ class EditTool extends EditRecord
                     $actor = SupportAuth::user();
                     Assignment::transfer($record, $to, $due, $data['condition_in'] ?? null, $data['condition_out'] ?? null, $actor instanceof User ? $actor : null);
                     $this->refreshFormData(['record']);
-                    $this->notify('success', 'Tool transferred');
+                    Notification::make()->title('Tool transferred')->success()->send();
                 }),
             Action::make('rotate_qr')
                 ->label('Rotate QR')
                 ->action(function (Tool $record): void {
                     $actor = SupportAuth::user();
                     $record->rotateQrToken($actor instanceof User ? $actor : null);
-                    $this->notify('success', 'QR rotated');
+                    Notification::make()->title('QR rotated')->success()->send();
                 }),
             Action::make('show_qr')
                 ->label('Show QR')
