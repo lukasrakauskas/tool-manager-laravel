@@ -100,9 +100,4 @@ class Worker extends Model
 
         return $qr;
     }
-
-    public function qrTokens(): MorphMany
-    {
-        return $this->morphMany(QrToken::class, 'subject');
-    }
 }
