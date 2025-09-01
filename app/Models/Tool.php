@@ -21,8 +21,7 @@ class Tool extends Model
         'power_watts',
         'size',
         'attributes',
-        'qr_secret',
-    ];
+            ];
 
     protected function casts(): array
     {
@@ -90,5 +89,10 @@ class Tool extends Model
     public function auditLogs(): MorphMany
     {
         return $this->morphMany(AuditLog::class, 'subject');
+    }
+
+    public function qrTokens(): MorphMany
+    {
+        return $this->morphMany(QrToken::class, 'subject');
     }
 }
