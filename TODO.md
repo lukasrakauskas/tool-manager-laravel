@@ -30,10 +30,10 @@ Status: In progress
   - [x] UI actions/buttons
   - [x] Tests: happy paths, conflicts
 - M5: QR Codes (tools/workers)
-  - [ ] QR resolve endpoint (/qr/t/<token>, /qr/w/<token>)
+  - [x] QR resolve endpoint (/qr/t/<token>, /qr/w/<token>)
   - [ ] Token rotation + revocation
   - [ ] Render SVG/PNG; display on detail pages
-  - [ ] Rate limit QR resolve
+  - [x] Rate limit QR resolve
   - [ ] Tests
 - M6: Mobile Scan UX
   - [ ] /scan page with camera; fallback input
