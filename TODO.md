@@ -1,6 +1,6 @@
 # Tool Management System – Execution Plan
 
-Status: Planning in progress
+Status: In progress
 
 ## Milestones
 - M0: Project skeleton, CI, env config
@@ -13,18 +13,18 @@ Status: Planning in progress
   - [ ] Session hardening, rate limits
   - [ ] Tests: signup/login/logout
 - M2: Tools CRUD + Search v1
-  - [ ] Migration: tools (status, serial unique, attributes JSON, qr_secret)
-  - [ ] Model, policies, factories, seeders
-  - [ ] Filament Resource or Livewire pages
+  - [x] Migration: tools (status, serial unique, attributes JSON, qr_secret)
+  - [x] Model, policies, factories, seeders
+  - [x] Filament Resource or Livewire pages
   - [ ] Search endpoints with indexes (name, serial, GIN on attributes)
   - [ ] Tests: CRUD + search filters
 - M3: Workers CRUD
-  - [ ] Migration: workers (status, external_code?, qr_secret)
+  - [x] Migration: workers (status, external_code?, qr_secret)
   - [ ] Model, policies, factories
   - [ ] UI pages/forms
   - [ ] Tests: CRUD
 - M4: Assignment + Audit
-  - [ ] Migrations: assignments, audit_logs
+  - [x] Migrations: assignments, audit_logs
   - [ ] Services: assign, return, transfer (transactions, validations)
   - [ ] Policies, events/listeners to append audit
   - [ ] UI actions/buttons
@@ -50,9 +50,9 @@ Status: Planning in progress
 ## Immediate Next Actions
 - [ ] Finalize DB schema draft for: users.role, tools, workers, assignments, audit_logs, tool_images
 - [ ] Create migrations (php artisan make:migration …) with constraints and indexes
-- [ ] Implement models with relationships and casts()
-- [ ] Seed minimal demo data
-- [ ] Add Pest tests for migrations/models basics
+- [x] Implement models with relationships and casts()
+- [x] Seed minimal demo data
+- [x] Add Pest tests for migrations/models basics
 
 ## Notes
 - Packages: Laravel 12.26, Livewire v3, Filament v4, Pest v4, Pint
