@@ -12,7 +12,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\EditRecord;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth as SupportAuth;
 
 class EditTool extends EditRecord
 {
@@ -41,7 +41,7 @@ class EditTool extends EditRecord
                 ->action(function (array $data, Tool $record): void {
                     $worker = Worker::query()->findOrFail($data['worker_id']);
                     $due = ! empty($data['due_at']) ? new \DateTimeImmutable($data['due_at']) : null;
-                    $actor = Auth::user();
+                    $actor = SupportAuth::user();
                     Assignment::assign($record, $worker, $due, $data['condition_out'] ?? null, $actor instanceof User ? $actor : null);
                     $this->refreshFormData(['record']);
                     $this->notify('success', 'Tool assigned');
@@ -61,7 +61,7 @@ class EditTool extends EditRecord
                         ->first();
 
                     if ($current) {
-                        $actor = Auth::user();
+                        $actor = SupportAuth::user();
                         $current->markReturned($data['condition_in'] ?? null, $actor instanceof User ? $actor : null);
                         $this->refreshFormData(['record']);
                         $this->notify('success', 'Tool returned');
@@ -88,10 +88,17 @@ class EditTool extends EditRecord
                 ->action(function (array $data, Tool $record): void {
                     $to = Worker::query()->findOrFail($data['to_worker_id']);
                     $due = ! empty($data['due_at']) ? new \DateTimeImmutable($data['due_at']) : null;
-                    $actor = Auth::user();
+                    $actor = SupportAuth::user();
                     Assignment::transfer($record, $to, $due, $data['condition_in'] ?? null, $data['condition_out'] ?? null, $actor instanceof User ? $actor : null);
                     $this->refreshFormData(['record']);
                     $this->notify('success', 'Tool transferred');
+                }),
+            Action::make('rotate_qr')
+                ->label('Rotate QR')
+                ->action(function (Tool $record): void {
+                    $actor = SupportAuth::user();
+                    $record->rotateQrToken($actor instanceof User ? $actor : null);
+                    $this->notify('success', 'QR rotated');
                 }),
             DeleteAction::make(),
         ];

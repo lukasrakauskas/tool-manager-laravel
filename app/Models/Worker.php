@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use App\Models\QrToken;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class Worker extends Model
@@ -72,6 +74,31 @@ class Worker extends Model
     public function auditLogs(): MorphMany
     {
         return $this->morphMany(AuditLog::class, 'subject');
+    }
+
+    public function qrTokens(): MorphMany
+    {
+        return $this->morphMany(QrToken::class, 'subject');
+    }
+
+    public function rotateQrToken(?User $actor = null): QrToken
+    {
+        $this->qrTokens()->whereNull('revoked_at')->update(['revoked_at' => now()]);
+
+        $qr = $this->qrTokens()->create([
+            'token' => bin2hex(random_bytes(16)),
+        ]);
+
+        $this->auditLogs()->create([
+            'user_id' => $actor?->id,
+            'action' => 'qr.rotated',
+            'meta' => [
+                'subject' => 'worker',
+            ],
+            'created_at' => now(),
+        ]);
+
+        return $qr;
     }
 
     public function qrTokens(): MorphMany
