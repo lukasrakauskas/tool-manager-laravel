@@ -22,6 +22,10 @@ class EditWorker extends EditRecord
                     $record->rotateQrToken($actor instanceof \App\Models\User ? $actor : null);
                     $this->notify('success', 'QR rotated');
                 }),
+            Action::make('show_qr')
+                ->label('Show QR')
+                ->modalHeading('Worker QR Code')
+                ->modalContent(fn (\App\Models\Worker $record): string => \Blade::render('<div class="p-4"><img src="'.e(route('qr.svg', ['type' => 'w', 'token' => $record->ensureActiveQrToken()->token])).'" alt="Worker QR" class="mx-auto"></div>')),
             DeleteAction::make(),
         ];
     }
