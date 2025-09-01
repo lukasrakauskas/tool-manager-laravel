@@ -103,13 +103,10 @@ class Assignment extends Model
             throw ValidationException::withMessages(['returned_at' => 'Assignment already returned.']);
         }
 
-        return DB::transaction(function (): self {
+        return DB::transaction(function () use ($conditionIn, $actor): self {
             $this->returned_at = Carbon::now();
             $this->status = 'returned';
-            $this->condition_in = $this->condition_in ?: null;
-            if ($this->condition_in === null) {
-                $this->condition_in = $conditionIn ?? null;
-            }
+            $this->condition_in = $conditionIn;
             $this->save();
 
             $tool = Tool::query()->whereKey($this->tool_id)->lockForUpdate()->firstOrFail();
