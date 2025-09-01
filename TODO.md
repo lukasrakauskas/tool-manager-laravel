@@ -20,8 +20,8 @@ Status: In progress
   - [x] Tests: table filters (brand, voltage)
 - M3: Workers CRUD
   - [x] Migration: workers (status, external_code?, qr_secret)
-  - [ ] Model, policies, factories
-  - [ ] UI pages/forms
+  - [x] Model, policies, factories
+  - [x] UI pages/forms
   - [ ] Tests: CRUD
 - M4: Assignment + Audit
   - [x] Migrations: assignments, audit_logs
