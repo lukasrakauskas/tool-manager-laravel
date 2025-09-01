@@ -98,6 +98,25 @@ class Tool extends Model
         return $this->morphMany(QrToken::class, 'subject');
     }
 
+    public function ensureActiveQrToken(): QrToken
+    {
+        $current = $this->qrTokens()
+            ->whereNull('revoked_at')
+            ->where(function ($q) {
+                $q->whereNull('expires_at')->orWhere('expires_at', '>', now());
+            })
+            ->latest('id')
+            ->first();
+
+        if ($current) {
+            return $current;
+        }
+
+        return $this->qrTokens()->create([
+            'token' => bin2hex(random_bytes(16)),
+        ]);
+    }
+
     public function rotateQrToken(?User $actor = null): QrToken
     {
         $this->qrTokens()->whereNull('revoked_at')->update(['revoked_at' => now()]);
