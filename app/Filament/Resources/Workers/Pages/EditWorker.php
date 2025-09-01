@@ -2,19 +2,20 @@
 
 namespace App\Filament\Resources\Workers\Pages;
 
+use App\Filament\Resources\Workers\WorkerResource;
+use App\Models\Assignment;
 use App\Models\Tool;
 use App\Models\User;
 use App\Models\Worker;
-use App\Models\Assignment;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
-use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
-use Illuminate\Support\Facades\Blade;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Resources\Workers\WorkerResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
 
 class EditWorker extends EditRecord
 {
@@ -42,7 +43,7 @@ class EditWorker extends EditRecord
                 ])
                 ->action(function (array $data, Worker $record): void {
                     $tool = Tool::query()->findOrFail($data['tool_id']);
-                    $due = !empty($data['due_at']) ? new \DateTimeImmutable($data['due_at']) : null;
+                    $due = ! empty($data['due_at']) ? new \DateTimeImmutable($data['due_at']) : null;
                     $actor = Auth::user();
                     Assignment::assign($tool, $record, $due, $data['condition_out'] ?? null, $actor instanceof User ? $actor : null);
                     $this->refreshFormData(['record']);
@@ -131,7 +132,7 @@ class EditWorker extends EditRecord
             Action::make('show_qr')
                 ->label('Show QR')
                 ->modalHeading('Worker QR Code')
-                ->modalContent(fn (Worker $record): string => Blade::render('<div class="p-4"><img src="'.e(route('qr.svg', ['type' => 'w', 'token' => $record->ensureActiveQrToken()->token])).'" alt="Worker QR" class="mx-auto"></div>')),
+                ->modalContent(fn (Worker $record): HtmlString => new HtmlString(Blade::render('<div class="p-4"><img src="'.e(route('qr.svg', ['type' => 'w', 'token' => $record->ensureActiveQrToken()->token])).'" alt="Worker QR" class="mx-auto"></div>'))),
             DeleteAction::make(),
         ];
     }

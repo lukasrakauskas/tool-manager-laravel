@@ -2,19 +2,20 @@
 
 namespace App\Filament\Resources\Tools\Pages;
 
+use App\Filament\Resources\Tools\ToolResource;
+use App\Models\Assignment;
 use App\Models\Tool;
 use App\Models\User;
 use App\Models\Worker;
-use App\Models\Assignment;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\Select;
-use Illuminate\Support\Facades\Blade;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Resources\Tools\ToolResource;
 use Illuminate\Support\Facades\Auth as SupportAuth;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
 
 class EditTool extends EditRecord
 {
@@ -105,7 +106,7 @@ class EditTool extends EditRecord
             Action::make('show_qr')
                 ->label('Show QR')
                 ->modalHeading('Tool QR Code')
-                ->modalContent(fn (Tool $record): string => Blade::render('<div class="p-4"><img src="'.e(route('qr.svg', ['type' => 't', 'token' => $record->ensureActiveQrToken()->token])).'" alt="Tool QR" class="mx-auto"></div>')),
+                ->modalContent(fn (Tool $record): HtmlString => new HtmlString(Blade::render('<div class="p-4"><img src="'.e(route('qr.svg', ['type' => 't', 'token' => $record->ensureActiveQrToken()->token])).'" alt="Tool QR" class="mx-auto"></div>'))),
             DeleteAction::make(),
         ];
     }
