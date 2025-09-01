@@ -25,10 +25,10 @@ Status: In progress
   - [ ] Tests: CRUD
 - M4: Assignment + Audit
   - [x] Migrations: assignments, audit_logs
-  - [ ] Services: assign, return, transfer (transactions, validations)
+  - [x] Services: assign, return, transfer (transactions, validations)
   - [ ] Policies, events/listeners to append audit
-  - [ ] UI actions/buttons
-  - [ ] Tests: happy paths, conflicts
+  - [x] UI actions/buttons
+  - [x] Tests: happy paths, conflicts
 - M5: QR Codes (tools/workers)
   - [ ] QR resolve endpoint (/qr/t/<token>, /qr/w/<token>)
   - [ ] Token rotation + revocation
@@ -48,8 +48,8 @@ Status: In progress
   - [ ] Index review; p95 search target
 
 ## Immediate Next Actions
-- [ ] Finalize DB schema draft for: users.role, tools, workers, assignments, audit_logs, tool_images
-- [ ] Create migrations (php artisan make:migration …) with constraints and indexes
+- [x] Finalize DB schema draft for: users.role, tools, workers, assignments, audit_logs, tool_images
+- [x] Create migrations (php artisan make:migration …) with constraints and indexes
 - [x] Implement models with relationships and casts()
 - [x] Seed minimal demo data
 - [x] Add Pest tests for migrations/models basics
