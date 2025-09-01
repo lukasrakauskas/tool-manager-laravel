@@ -30,6 +30,6 @@ it('filters tools by voltage range attribute', function () {
 
     Livewire::test(ListTools::class)
         ->filterTable('voltage', ['min' => 15, 'max' => 20, 'isActive' => true])
-        ->assertCanSeeTableRecords([$mid])
-        ->assertCanNotSeeTableRecords([$low, $high]);
+        ->assertCanSeeTableRecords(\App\Models\Tool::query()->whereKey($mid->id)->get())
+        ->assertCanNotSeeTableRecords(\App\Models\Tool::query()->whereKey([$low->id, $high->id])->get());
 });
