@@ -3,6 +3,10 @@
 namespace App\Filament\Resources\Tools\Schemas;
 
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
 
 class ToolForm
 {
@@ -10,21 +14,21 @@ class ToolForm
     {
         return $schema
             ->components([
-                \Filament\Schemas\Components\Section::make()
+                Section::make()
                     ->columns(2)
                     ->schema([
-                        \Filament\Forms\Components\TextInput::make('name')->required()->maxLength(255),
-                        \Filament\Forms\Components\TextInput::make('serial')->required()->unique(ignoreRecord: true),
-                        \Filament\Forms\Components\Select::make('status')->options([
+                        TextInput::make('name')->required()->maxLength(255),
+                        TextInput::make('serial')->required()->unique(ignoreRecord: true),
+                        Select::make('status')->options([
                             'available' => 'Available',
                             'assigned' => 'Assigned',
                             'maintenance' => 'Maintenance',
                             'retired' => 'Retired',
                         ])->required(),
-                        \Filament\Forms\Components\TextInput::make('category')->maxLength(255),
-                        \Filament\Forms\Components\TextInput::make('power_watts')->numeric()->minValue(0),
-                        \Filament\Forms\Components\TextInput::make('size')->maxLength(255),
-                        \Filament\Forms\Components\KeyValue::make('attributes')->keyLabel('Key')->valueLabel('Value'),
+                        TextInput::make('category')->maxLength(255),
+                        TextInput::make('power_watts')->numeric()->minValue(0),
+                        TextInput::make('size')->maxLength(255),
+                        KeyValue::make('attributes')->keyLabel('Key')->valueLabel('Value'),
                     ]),
             ]);
     }

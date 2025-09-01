@@ -3,13 +3,16 @@
 namespace App\Filament\Resources\Tools\Tables;
 
 use App\Models\Tool;
+use Filament\Tables\Table;
+use Filament\Actions\EditAction;
+use Filament\Tables\Filters\Filter;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Filament\Tables\Filters\Filter;
-use Filament\Tables\Table;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\TernaryFilter;
 
 class ToolsTable
 {
@@ -18,22 +21,22 @@ class ToolsTable
         return $table
             ->deferFilters(false)
             ->columns([
-                \Filament\Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('serial')->searchable()->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('category')->toggleable()->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('status')->badge()->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('power_watts')->numeric()->toggleable(),
-                \Filament\Tables\Columns\TextColumn::make('size')->toggleable(),
-                \Filament\Tables\Columns\TextColumn::make('updated_at')->dateTime()->since(),
+                TextColumn::make('name')->searchable()->sortable(),
+                TextColumn::make('serial')->searchable()->sortable(),
+                TextColumn::make('category')->toggleable()->sortable(),
+                TextColumn::make('status')->badge()->sortable(),
+                TextColumn::make('power_watts')->numeric()->toggleable(),
+                TextColumn::make('size')->toggleable(),
+                TextColumn::make('updated_at')->dateTime()->since(),
             ])
             ->filters([
-                \Filament\Tables\Filters\SelectFilter::make('status')->options([
+                SelectFilter::make('status')->options([
                     'available' => 'Available',
                     'assigned' => 'Assigned',
                     'maintenance' => 'Maintenance',
                     'retired' => 'Retired',
                 ]),
-                \Filament\Tables\Filters\SelectFilter::make('brand')
+                SelectFilter::make('brand')
                     ->label('Brand')
                     ->options(fn (): array => Tool::query()
                         ->selectRaw("distinct json_extract(attributes, '$.brand') as brand")
@@ -65,7 +68,7 @@ class ToolsTable
                                 fn (Builder $q, $max): Builder => $q->whereRaw("CAST(json_extract(attributes, '$.voltage') AS INTEGER) <= ?", [$max]),
                             );
                     }),
-                \Filament\Tables\Filters\TernaryFilter::make('has_images')
+                TernaryFilter::make('has_images')
                     ->label('Has Images')
                     ->queries(
                         true: fn ($query) => $query->has('images'),

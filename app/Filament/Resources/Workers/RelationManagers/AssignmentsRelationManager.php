@@ -6,7 +6,6 @@ use App\Filament\Resources\Tools\ToolResource;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class AssignmentsRelationManager extends RelationManager
 {

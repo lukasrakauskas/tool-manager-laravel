@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Workers\Pages;
 
 use App\Filament\Resources\Workers\WorkerResource;
-use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Components\Grid;

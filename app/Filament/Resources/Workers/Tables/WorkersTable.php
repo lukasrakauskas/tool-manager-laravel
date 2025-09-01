@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources\Workers\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
+use Filament\Tables\Table;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Tables\Table;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Tables\Columns\TextColumn;
 
 class WorkersTable
 {
@@ -14,10 +15,10 @@ class WorkersTable
     {
         return $table
             ->columns([
-                \Filament\Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('external_code')->searchable()->toggleable(),
-                \Filament\Tables\Columns\TextColumn::make('status')->badge()->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('updated_at')->dateTime()->since(),
+                TextColumn::make('name')->searchable()->sortable(),
+                TextColumn::make('external_code')->searchable()->toggleable(),
+                TextColumn::make('status')->badge()->sortable(),
+                TextColumn::make('updated_at')->dateTime()->since(),
             ])
             ->filters([
                 \Filament\Tables\Filters\SelectFilter::make('status')->options([

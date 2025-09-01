@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Workers\Schemas;
 
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 
 class WorkerForm
 {
@@ -13,9 +15,9 @@ class WorkerForm
                 \Filament\Schemas\Components\Section::make()
                     ->columns(2)
                     ->schema([
-                        \Filament\Forms\Components\TextInput::make('name')->required()->maxLength(255),
-                        \Filament\Forms\Components\TextInput::make('external_code')->maxLength(255),
-                        \Filament\Forms\Components\Select::make('status')->options([
+                        TextInput::make('name')->required()->maxLength(255),
+                        TextInput::make('external_code')->maxLength(255),
+                        Select::make('status')->options([
                             'active' => 'Active',
                             'inactive' => 'Inactive',
                         ])->required(),

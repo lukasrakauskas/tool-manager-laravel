@@ -2,17 +2,19 @@
 
 namespace App\Filament\Resources\Workers;
 
-use App\Filament\Resources\Workers\Pages\CreateWorker;
+use BackedEnum;
+use App\Models\Worker;
+use Filament\Tables\Table;
+use Filament\Schemas\Schema;
+use Filament\Resources\Resource;
+use Filament\Support\Icons\Heroicon;
 use App\Filament\Resources\Workers\Pages\EditWorker;
+use App\Filament\Resources\Workers\Pages\ViewWorker;
 use App\Filament\Resources\Workers\Pages\ListWorkers;
+use App\Filament\Resources\Workers\Pages\CreateWorker;
 use App\Filament\Resources\Workers\Schemas\WorkerForm;
 use App\Filament\Resources\Workers\Tables\WorkersTable;
-use App\Models\Worker;
-use BackedEnum;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
+use App\Filament\Resources\Workers\RelationManagers\AssignmentsRelationManager;
 
 class WorkerResource extends Resource
 {
@@ -33,7 +35,7 @@ class WorkerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            \App\Filament\Resources\Workers\RelationManagers\AssignmentsRelationManager::class,
+            AssignmentsRelationManager::class,
         ];
     }
 
@@ -42,7 +44,7 @@ class WorkerResource extends Resource
         return [
             'index' => ListWorkers::route('/'),
             'create' => CreateWorker::route('/create'),
-            'view' => \App\Filament\Resources\Workers\Pages\ViewWorker::route('/{record}'),
+            'view' => ViewWorker::route('/{record}'),
             'edit' => EditWorker::route('/{record}/edit'),
         ];
     }
