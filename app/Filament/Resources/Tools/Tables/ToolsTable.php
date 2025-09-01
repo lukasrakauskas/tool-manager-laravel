@@ -2,10 +2,14 @@
 
 namespace App\Filament\Resources\Tools\Tables;
 
+use App\Models\Tool;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ToolsTable
 {
@@ -28,6 +32,38 @@ class ToolsTable
                     'maintenance' => 'Maintenance',
                     'retired' => 'Retired',
                 ]),
+                \Filament\Tables\Filters\SelectFilter::make('brand')
+                    ->label('Brand')
+                    ->options(fn (): array => Tool::query()
+                        ->selectRaw("distinct json_extract(attributes, '$.brand') as brand")
+                        ->whereNotNull('attributes')
+                        ->pluck('brand', 'brand')
+                        ->filter()
+                        ->toArray())
+                    ->query(function (Builder $query, array $data): Builder {
+                        if (! isset($data['value']) || $data['value'] === null || $data['value'] === '') {
+                            return $query;
+                        }
+
+                        return $query->whereRaw("json_extract(attributes, '$.brand') = ?", [$data['value']]);
+                    }),
+                Filter::make('voltage')
+                    ->label('Voltage')
+                    ->schema([
+                        TextInput::make('min')->numeric()->label('Min'),
+                        TextInput::make('max')->numeric()->label('Max'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                filled($data['min'] ?? null),
+                                fn (Builder $q, $min): Builder => $q->whereRaw("CAST(json_extract(attributes, '$.voltage') AS INTEGER) >= ?", [$min]),
+                            )
+                            ->when(
+                                filled($data['max'] ?? null),
+                                fn (Builder $q, $max): Builder => $q->whereRaw("CAST(json_extract(attributes, '$.voltage') AS INTEGER) <= ?", [$max]),
+                            );
+                    }),
                 \Filament\Tables\Filters\TernaryFilter::make('has_images')
                     ->label('Has Images')
                     ->queries(
