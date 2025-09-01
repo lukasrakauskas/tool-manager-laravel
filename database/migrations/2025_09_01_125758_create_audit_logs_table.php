@@ -19,7 +19,7 @@ return new class extends Migration
             $table->json('meta')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->index(['action']);
-            $table->index(['subject_type', 'subject_id']);
+            $table->index(['subject_type', 'subject_id', 'created_at']);
         });
     }
 
