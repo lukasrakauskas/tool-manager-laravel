@@ -10,3 +10,7 @@ Keep track of your current status in TODO.md
 
 If you already have a task plan, continue working on your tasks.
 Otherwise, read PLAN.md and draft a task plan
+
+Rely mostly on Filament. Use it for auth, dashboard pages etc.
+
+Dont ask questions, decide for yourself.
