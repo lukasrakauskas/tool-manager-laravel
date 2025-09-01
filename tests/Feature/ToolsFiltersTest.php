@@ -3,7 +3,7 @@
 use App\Filament\Resources\Tools\Pages\ListTools;
 use App\Models\Tool;
 use App\Models\User;
-use function Pest\Livewire\livewire;
+use Livewire\Livewire;
 
 it('filters tools by brand attribute', function () {
     $user = User::factory()->create(['role' => 'Admin']);
@@ -11,8 +11,9 @@ it('filters tools by brand attribute', function () {
     Tool::factory()->count(2)->create(['attributes' => ['brand' => 'Makita', 'voltage' => 18]]);
     Tool::factory()->count(1)->create(['attributes' => ['brand' => 'Bosch', 'voltage' => 12]]);
 
-    livewire(ListTools::class)
-        ->actingAs($user)
+    $this->actingAs($user);
+
+    Livewire::test(ListTools::class)
         ->filterTable('brand', 'Makita')
         ->assertCanSeeTableRecords(Tool::query()->whereRaw("json_extract(attributes, '$.brand') = ?", ['Makita'])->get())
         ->assertCanNotSeeTableRecords(Tool::query()->whereRaw("json_extract(attributes, '$.brand') = ?", ['Bosch'])->get());
@@ -25,8 +26,9 @@ it('filters tools by voltage range attribute', function () {
     $mid = Tool::factory()->create(['attributes' => ['brand' => 'Makita', 'voltage' => 18]]);
     $high = Tool::factory()->create(['attributes' => ['brand' => 'Makita', 'voltage' => 24]]);
 
-    livewire(ListTools::class)
-        ->actingAs($user)
+    $this->actingAs($user);
+
+    Livewire::test(ListTools::class)
         ->filterTable('voltage', ['min' => 15, 'max' => 20])
         ->assertCanSeeTableRecords([$mid])
         ->assertCanNotSeeTableRecords([$low, $high]);
