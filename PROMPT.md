@@ -7,3 +7,6 @@ Always ensure that code is high quality and works.
 Make a commit your changes after every single file edit.
 
 Keep track of your current status in TODO.md
+
+If you already have a task plan, continue working on your tasks.
+Otherwise, read PLAN.md and draft a task plan
