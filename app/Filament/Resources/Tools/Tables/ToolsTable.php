@@ -16,6 +16,7 @@ class ToolsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->deferFilters(false)
             ->columns([
                 \Filament\Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('serial')->searchable()->sortable(),
