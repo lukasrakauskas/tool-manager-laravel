@@ -14,7 +14,7 @@ it('filters tools by brand attribute', function () {
     $this->actingAs($user);
 
     Livewire::test(ListTools::class)
-        ->filterTable('brand', 'Makita')
+        ->setTableFilter('brand', 'Makita')
         ->assertCanSeeTableRecords(Tool::query()->whereRaw("json_extract(attributes, '$.brand') = ?", ['Makita'])->get())
         ->assertCanNotSeeTableRecords(Tool::query()->whereRaw("json_extract(attributes, '$.brand') = ?", ['Bosch'])->get());
 });
@@ -29,7 +29,7 @@ it('filters tools by voltage range attribute', function () {
     $this->actingAs($user);
 
     Livewire::test(ListTools::class)
-        ->filterTable('voltage', ['min' => 15, 'max' => 20, 'isActive' => true])
+        ->setTableFilter('voltage', ['min' => 15, 'max' => 20, 'isActive' => true])
         ->assertCanSeeTableRecords(\App\Models\Tool::query()->whereKey($mid->id)->get()->values())
         ->assertCanNotSeeTableRecords(\App\Models\Tool::query()->whereKey([$low->id, $high->id])->get()->values());
 });
