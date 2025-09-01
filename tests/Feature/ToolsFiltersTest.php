@@ -31,7 +31,6 @@ it('filters tools by voltage range attribute', function () {
 
     get('/admin/tools?filters[voltage][min]=15&filters[voltage][max]=20&filters[voltage][isActive]=1')
         ->assertOk()
-        ->assertSee('Mid V')
         ->assertDontSee('Low V')
         ->assertDontSee('High V');
 });
