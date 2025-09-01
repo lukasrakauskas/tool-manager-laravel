@@ -31,7 +31,7 @@ class EditTool extends EditRecord
                 ->schema([
                     Select::make('worker_id')
                         ->label('Worker')
-                        ->relationship('worker', 'name')
+                        ->options(fn (): array => Worker::query()->where('status', 'active')->orderBy('name')->pluck('name', 'id')->all())
                         ->searchable()
                         ->required(),
                     TextInput::make('due_at')
@@ -77,7 +77,7 @@ class EditTool extends EditRecord
                 ->schema([
                     Select::make('to_worker_id')
                         ->label('To Worker')
-                        ->relationship('worker', 'name')
+                        ->options(fn (): array => Worker::query()->where('status', 'active')->orderBy('name')->pluck('name', 'id')->all())
                         ->searchable()
                         ->required(),
                     TextInput::make('due_at')
@@ -106,7 +106,11 @@ class EditTool extends EditRecord
             Action::make('show_qr')
                 ->label('Show QR')
                 ->modalHeading('Tool QR Code')
-                ->modalContent(fn (Tool $record): HtmlString => new HtmlString(Blade::render('<div class="p-4"><img src="'.e(route('qr.svg', ['type' => 't', 'token' => $record->ensureActiveQrToken()->token])).'" alt="Tool QR" class="mx-auto"></div>'))),
+                ->modalContent(function (Tool $record): HtmlString {
+                    $imageUrl = e(route('qr.svg', ['type' => 't', 'token' => $record->ensureActiveQrToken()->token]));
+                    $resolveUrl = e(route('qr.resolve', ['type' => 't', 'token' => $record->ensureActiveQrToken()->token]));
+                    return new HtmlString(Blade::render('<div class="p-4"><img src="'.$imageUrl.'" alt="Tool QR" class="mx-auto"><a href="'.$resolveUrl.'">'.$resolveUrl.'</a></div>'));
+                }),
             DeleteAction::make(),
         ];
     }
