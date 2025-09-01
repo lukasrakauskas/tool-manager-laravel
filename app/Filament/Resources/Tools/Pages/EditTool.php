@@ -100,6 +100,10 @@ class EditTool extends EditRecord
                     $record->rotateQrToken($actor instanceof User ? $actor : null);
                     $this->notify('success', 'QR rotated');
                 }),
+            Action::make('show_qr')
+                ->label('Show QR')
+                ->modalHeading('Tool QR Code')
+                ->modalContent(fn (Tool $record): string => \Blade::render('<div class="p-4"><img src="'.e(route('qr.svg', ['type' => 't', 'token' => $record->ensureActiveQrToken()->token])).'" alt="Tool QR" class="mx-auto"></div>')),
             DeleteAction::make(),
         ];
     }
