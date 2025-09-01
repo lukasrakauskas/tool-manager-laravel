@@ -16,8 +16,8 @@ Status: In progress
   - [x] Migration: tools (status, serial unique, attributes JSON, qr_secret)
   - [x] Model, policies, factories, seeders
   - [x] Filament Resource or Livewire pages
-  - [ ] Search endpoints with indexes (name, serial, GIN on attributes)
-  - [ ] Tests: CRUD + search filters
+  - [x] Search filters on table (brand, voltage)
+  - [x] Tests: table filters (brand, voltage)
 - M3: Workers CRUD
   - [x] Migration: workers (status, external_code?, qr_secret)
   - [ ] Model, policies, factories
